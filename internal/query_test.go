@@ -1,10 +1,11 @@
 package internal
 
 import (
-	"github.com/Joffref/opa-middleware/config"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/lamassuiot/opa-http-middleware/config"
 )
 
 func TestQueryPolicy(t *testing.T) {

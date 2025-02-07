@@ -1,11 +1,12 @@
 package opamiddleware
 
 import (
-	"github.com/Joffref/opa-middleware/config"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
+
+	"github.com/lamassuiot/opa-http-middleware/config"
 )
 
 var Policy = `

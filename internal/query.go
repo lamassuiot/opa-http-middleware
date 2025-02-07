@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"github.com/Joffref/opa-middleware/config"
-	"github.com/open-policy-agent/opa/rego"
 	"net/http"
+
+	"github.com/lamassuiot/opa-http-middleware/config"
+	"github.com/open-policy-agent/opa/rego"
 )
 
 // QueryPolicy is a helper function to query a local policy evaluation.

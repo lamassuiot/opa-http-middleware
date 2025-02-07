@@ -1,10 +1,11 @@
 package internal
 
 import (
-	"github.com/Joffref/opa-middleware/config"
 	"net/http"
 	"reflect"
 	"testing"
+
+	"github.com/lamassuiot/opa-http-middleware/config"
 )
 
 func Test_buildHeaders(t *testing.T) {

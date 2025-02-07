@@ -2,10 +2,11 @@ package opamiddleware
 
 import (
 	"errors"
-	"github.com/Joffref/opa-middleware/config"
-	"github.com/Joffref/opa-middleware/internal"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/lamassuiot/opa-http-middleware/config"
+	"github.com/lamassuiot/opa-http-middleware/internal"
 )
 
 type GinInputCreationMethod func(c *gin.Context) (map[string]interface{}, error)

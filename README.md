@@ -7,7 +7,7 @@ You can use OPA as local policy engine, or as a remote policy engine.
 ## Installation
 
 ```bash
-go get github.com/Joffref/opa-middleware
+go get github.com/lamassuiot/opa-http-middleware
 ```
 
 ## Usage Generic with OPA and HTTP
@@ -18,8 +18,8 @@ go get github.com/Joffref/opa-middleware
 package main
 
 import (
-	"github.com/Joffref/opa-middleware"
-	"github.com/Joffref/opa-middleware/config"
+	"github.com/lamassuiot/opa-http-middleware"
+	"github.com/lamassuiot/opa-http-middleware/config"
 	"net/http"
 )
 
@@ -77,8 +77,8 @@ The policy is the same as above, but the policy is stored in a remote server.
 package main
 
 import (
-	"github.com/Joffref/opa-middleware"
-	"github.com/Joffref/opa-middleware/config"
+	"github.com/lamassuiot/opa-http-middleware"
+	"github.com/lamassuiot/opa-http-middleware/config"
 	"net/http"
 )
 
@@ -125,8 +125,8 @@ func main() {
 package main
 
 import (
-	"github.com/Joffref/opa-middleware"
-	"github.com/Joffref/opa-middleware/config"
+	"github.com/lamassuiot/opa-http-middleware"
+	"github.com/lamassuiot/opa-http-middleware/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -165,8 +165,8 @@ func main() {
 package main
 
 import (
-	"github.com/Joffref/opa-middleware"
-	"github.com/Joffref/opa-middleware/config"
+	"github.com/lamassuiot/opa-http-middleware"
+	"github.com/lamassuiot/opa-http-middleware/config"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -207,8 +207,8 @@ func main() {
 package main
 
 import (
-	"github.com/Joffref/opa-middleware"
-	"github.com/Joffref/opa-middleware/config"
+	"github.com/lamassuiot/opa-http-middleware"
+	"github.com/lamassuiot/opa-http-middleware/config"
 	"github.com/labstack/echo/v4"
 )
 

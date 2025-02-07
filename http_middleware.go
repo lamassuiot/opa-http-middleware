@@ -1,9 +1,10 @@
 package opamiddleware
 
 import (
-	"github.com/Joffref/opa-middleware/config"
-	"github.com/Joffref/opa-middleware/internal"
 	"net/http"
+
+	"github.com/lamassuiot/opa-http-middleware/config"
+	"github.com/lamassuiot/opa-http-middleware/internal"
 )
 
 // HTTPMiddleware is the middleware for http requests

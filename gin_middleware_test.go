@@ -1,12 +1,13 @@
 package opamiddleware
 
 import (
-	"github.com/Joffref/opa-middleware/config"
-	"github.com/labstack/echo/v4"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/lamassuiot/opa-http-middleware/config"
 )
 
 var Test_Policy = `
@@ -19,10 +20,10 @@ allow {
 	input.method = "GET"
 }`
 
-func TestEchoMiddleware_Query(t *testing.T) {
+func TestGinMiddleware_Query(t *testing.T) {
 	type fields struct {
-		Config *config.Config
-		InputCreationMethod   EchoInputCreationMethod
+		Config              *config.Config
+		InputCreationMethod GinInputCreationMethod
 	}
 	type args struct {
 		req *http.Request
@@ -35,19 +36,19 @@ func TestEchoMiddleware_Query(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "Test EchoMiddleware_Query",
+			name: "Test GinMiddleware_Query",
 			fields: fields{
 				Config: &config.Config{
-					Policy: Test_Policy,
-					Query:  "data.policy.allow",
+					Policy:           Test_Policy,
+					Query:            "data.policy.allow",
 					ExceptedResult:   true,
 					DeniedStatusCode: 403,
 					DeniedMessage:    "Forbidden",
 				},
-				InputCreationMethod: func(c echo.Context) (map[string]interface{}, error) {
+				InputCreationMethod: func(c *gin.Context) (map[string]interface{}, error) {
 					return map[string]interface{}{
-						"path":   c.Request().URL.Path,
-						"method": c.Request().Method,
+						"path":   c.Request.URL.Path,
+						"method": c.Request.Method,
 					}, nil
 				},
 			},
@@ -64,13 +65,16 @@ func TestEchoMiddleware_Query(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {		
-			e := echo.New()	
-			h := &EchoMiddleware{
-				Config: tt.fields.Config,
-				InputCreationMethod:   tt.fields.InputCreationMethod,
+		t.Run(tt.name, func(t *testing.T) {
+			e := gin.New()
+			h := &GinMiddleware{
+				Config:              tt.fields.Config,
+				InputCreationMethod: tt.fields.InputCreationMethod,
 			}
-			c := e.NewContext(tt.args.req, httptest.NewRecorder())
+
+			c := gin.CreateTestContextOnly(httptest.NewRecorder(), e)
+			c.Request = tt.args.req
+
 			got, err := h.query(c)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Query() error = %v, wantErr %v", err, tt.wantErr)
@@ -83,29 +87,29 @@ func TestEchoMiddleware_Query(t *testing.T) {
 	}
 }
 
-func TestEchoMiddleware_Use(t *testing.T) {
+func TestGinMiddleware_Use(t *testing.T) {
 	type fields struct {
-		Config *config.Config
-		InputCreationMethod   EchoInputCreationMethod
+		Config              *config.Config
+		InputCreationMethod GinInputCreationMethod
 	}
 	tests := []struct {
 		name   string
 		fields fields
 	}{
 		{
-			name: "Test EchoMiddleware_Use",
+			name: "Test GinMiddleware_Use",
 			fields: fields{
 				Config: &config.Config{
-					Policy: Test_Policy,
-					Query:  "data.policy.allow",
+					Policy:           Test_Policy,
+					Query:            "data.policy.allow",
 					ExceptedResult:   true,
 					DeniedStatusCode: 403,
 					DeniedMessage:    "Forbidden",
 				},
-				InputCreationMethod: func(c echo.Context) (map[string]interface{}, error) {
+				InputCreationMethod: func(c *gin.Context) (map[string]interface{}, error) {
 					return map[string]interface{}{
-						"path":   c.Request().URL.Path,
-						"method": c.Request().Method,
+						"path":   c.Request.URL.Path,
+						"method": c.Request.Method,
 					}, nil
 				},
 			},
@@ -113,55 +117,55 @@ func TestEchoMiddleware_Use(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			h := &EchoMiddleware{
-				Config: tt.fields.Config,
-				InputCreationMethod:   tt.fields.InputCreationMethod,
+			h := &GinMiddleware{
+				Config:              tt.fields.Config,
+				InputCreationMethod: tt.fields.InputCreationMethod,
 			}
 			h.Use()
 		})
 	}
 }
 
-func TestNewEchoMiddleware(t *testing.T) {
+func TestNewGinMiddleware(t *testing.T) {
 	type args struct {
-		cfg  *config.Config
-		inputCreationMethod EchoInputCreationMethod
+		cfg                 *config.Config
+		inputCreationMethod GinInputCreationMethod
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    *EchoMiddleware
+		want    *GinMiddleware
 		wantErr bool
 	}{
 		{
-			name: "Test NewEchoMiddleware",
+			name: "Test NewGinMiddleware",
 			args: args{
 				cfg: &config.Config{
-					Policy: "policy",
-					Query:  "data.query",
+					Policy:           "policy",
+					Query:            "data.query",
 					ExceptedResult:   true,
 					DeniedStatusCode: 403,
 					DeniedMessage:    "Forbidden",
 				},
-				inputCreationMethod: func(c echo.Context) (map[string]interface{}, error) {
+				inputCreationMethod: func(c *gin.Context) (map[string]interface{}, error) {
 					return map[string]interface{}{
-						"path":   c.Request().URL.Path,
-						"method": c.Request().Method,
+						"path":   c.Request.URL.Path,
+						"method": c.Request.Method,
 					}, nil
 				},
 			},
-			want: &EchoMiddleware{
+			want: &GinMiddleware{
 				Config: &config.Config{
-					Policy: "policy",
-					Query:  "data.query",
+					Policy:           "policy",
+					Query:            "data.query",
 					ExceptedResult:   true,
 					DeniedStatusCode: 403,
 					DeniedMessage:    "Forbidden",
 				},
-				InputCreationMethod: func(c echo.Context) (map[string]interface{}, error) {
+				InputCreationMethod: func(c *gin.Context) (map[string]interface{}, error) {
 					return map[string]interface{}{
-						"path":   c.Request().URL.Path,
-						"method": c.Request().Method,
+						"path":   c.Request.URL.Path,
+						"method": c.Request.Method,
 					}, nil
 				},
 			},
@@ -170,9 +174,9 @@ func TestNewEchoMiddleware(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, err := NewEchoMiddleware(tt.args.cfg, tt.args.inputCreationMethod)
+			_, err := NewGinMiddleware(tt.args.cfg, tt.args.inputCreationMethod)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewEchoMiddleware() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NewGinMiddleware() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 		})

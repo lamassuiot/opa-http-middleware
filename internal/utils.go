@@ -1,10 +1,11 @@
 package internal
 
 import (
-	"github.com/Joffref/opa-middleware/config"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/lamassuiot/opa-http-middleware/config"
 )
 
 func buildHeaders(r *http.Request, cfg *config.Config) (http.Header, error) {
