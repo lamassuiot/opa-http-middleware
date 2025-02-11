@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/lamassuiot/opa-http-middleware/config"
-	"github.com/open-policy-agent/opa/rego"
+	"github.com/open-policy-agent/opa/v1/rego"
 )
 
 // QueryPolicy is a helper function to query a local policy evaluation.

@@ -15,7 +15,7 @@ package policy
 
 default allow = false
 
-allow {
+allow if {
 	input.path = "/api/v1/users"
 	input.method = "GET"
 }`
